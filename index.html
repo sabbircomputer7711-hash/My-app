@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ST LEGEND CLUB</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+  body{background:#000;color:#fff;display:flex;flex-direction:column;height:100vh;}
+  header{background:linear-gradient(90deg,#ff0066,#ff6600);text-align:center;padding:15px;font-size:20px;font-weight:bold;}
+  main{flex:1;overflow-y:auto;padding:20px;}
+  .page{display:none;}
+  .active{display:block;}
+  .btn{background:linear-gradient(90deg,#ff0066,#ff6600);border:none;color:#fff;padding:10px 20px;border-radius:8px;margin-top:10px;font-weight:bold;}
+  .input{width:90%;padding:10px;margin:8px 0;border:none;border-radius:8px;}
+  nav{background:#111;display:flex;justify-content:space-around;padding:8px 0;border-top:1px solid #333;}
+  nav button{background:none;border:none;color:#aaa;font-size:13px;}
+  nav button.active{color:#ff6600;}
+  .avatar{width:80px;height:80px;border-radius:50%;background:#222;margin:auto;margin-top:10px;}
+  .uid{text-align:center;margin-top:5px;font-size:14px;color:#ff6600;}
+</style>
+</head>
+<body>
+
+<header>ST LEGEND CLUB</header>
+
+<main>
+  <!-- LOGIN PAGE -->
+  <div id="loginPage" class="page active">
+    <h2>🔐 Login</h2>
+    <input type="text" id="loginNumber" class="input" placeholder="Mobile Number">
+    <input type="password" id="loginPass" class="input" placeholder="Password">
+    <button class="btn" onclick="login()">Login</button>
+    <p style="margin-top:10px;">Don't have an account? 
+      <a href="#" style="color:#ff6600;" onclick="showPage('registerPage')">Register</a>
+    </p>
+  </div>
+
+  <!-- REGISTER PAGE -->
+  <div id="registerPage" class="page">
+    <h2>📝 Register</h2>
+    <input type="text" id="regNumber" class="input" placeholder="Mobile Number">
+    <input type="password" id="regPass" class="input" placeholder="Password">
+    <input type="password" id="regConfirm" class="input" placeholder="Confirm Password">
+    <button class="btn" onclick="register()">Create Account</button>
+    <p style="margin-top:10px;">Already have an account? 
+      <a href="#" style="color:#ff6600;" onclick="showPage('loginPage')">Login</a>
+    </p>
+  </div>
+
+  <!-- HOME PAGE -->
+  <div id="homePage" class="page">
+    <h2>🏠 Home</h2>
+    <div class="card">
+      <p>🎮 Wingo Game</p>
+      <button class="btn" onclick="showPage('gamePage')">Play Now</button>
+    </div>
+  </div>
+
+  <!-- GAME PAGE -->
+  <div id="gamePage" class="page">
+    <h2>🎮 Wingo Game</h2>
+    <p>Game screen here (demo)</p>
+    <button class="btn" onclick="alert('Game Coming Soon!')">Start Game</button>
+  </div>
+
+  <!-- ACCOUNT PAGE -->
+  <div id="accountPage" class="page">
+    <div class="avatar"></div>
+    <div class="uid" id="uidInfo"></div>
+    <h2 style="text-align:center;">👤 My Account</h2>
+    <p style="text-align:center;">Manage your profile and wallet</p>
+  </div>
+
+  <!-- DEPOSIT PAGE -->
+  <div id="depositPage" class="page">
+    <h2>💰 Deposit</h2>
+    <p>Select Method:</p>
+    <button class="btn" onclick="alert('Bkash: 01917771168')">Bkash</button>
+    <button class="btn" onclick="alert('Nagad: 01917771168')">Nagad</button>
+  </div>
+
+  <!-- WITHDRAW PAGE -->
+  <div id="withdrawPage" class="page">
+    <h2>💸 Withdraw</h2>
+    <input type="text" class="input" placeholder="Your Number">
+    <input type="text" class="input" placeholder="Amount">
+    <button class="btn" onclick="alert('Withdraw Request Sent!')">Submit</button>
+  </div>
+
+  <!-- VIP PAGE -->
+  <div id="vipPage" class="page">
+    <h2>🏆 VIP Zone</h2>
+    <p>Upgrade your VIP level and get bonuses!</p>
+  </div>
+
+</main>
+
+<nav>
+  <button id="navHome" class="active" onclick="showPage('homePage')">🏠 Home</button>
+  <button onclick="showPage('gamePage')">🎮 Game</button>
+  <button onclick="showPage('accountPage')">👤 Account</button>
+  <button onclick="showPage('depositPage')">💰 Deposit</button>
+  <button onclick="showPage('withdrawPage')">💸 Withdraw</button>
+</nav>
+
+<script>
+  let currentUID = localStorage.getItem("uid") || null;
+
+  function showPage(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+    if(id.includes("home")) document.getElementById("navHome").classList.add("active");
+  }
+
+  function register(){
+    let num = document.getElementById("regNumber").value;
+    let pass = document.getElementById("regPass").value;
+    let confirm = document.getElementById("regConfirm").value;
+    if(!num || !pass || pass!==confirm){alert("Invalid input!");return;}
+    let uid = Math.floor(Math.random()*100000);
+    localStorage.setItem("uid",uid);
+    localStorage.setItem("number",num);
+    localStorage.setItem("pass",pass);
+    alert("Registration successful! Your UID: "+uid);
+    showPage('loginPage');
+  }
+
+  function login(){
+    let num = document.getElementById("loginNumber").value;
+    let pass = document.getElementById("loginPass").value;
+    if(num===localStorage.getItem("number") && pass===localStorage.getItem("pass")){
+      currentUID = localStorage.getItem("uid");
+      document.getElementById("uidInfo").innerText = "UID: "+currentUID;
+      showPage('homePage');
+    } else {
+      alert("Wrong number or password!");
+    }
+  }
+</script>
+
+</body>
+</html>
